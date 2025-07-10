@@ -1,0 +1,50 @@
+name: Flutter Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apkimport 'package:flutter/material.dart';
+import 'screens/login_screen.dart';
+
+void main() {
+  runApp(ClickChatApp());
+}
+
+class ClickChatApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'ClixChat',
+      theme: ThemeData(primarySwatch: Colors.teal),
+      home: LoginScreen(),
+    );
+  }
+}
